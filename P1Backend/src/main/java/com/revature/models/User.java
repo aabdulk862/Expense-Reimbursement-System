@@ -23,7 +23,7 @@ public class User {
     private String password;
     @Column(nullable = false)
     private String role = "employee";
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Reimbursement> requests;
 
