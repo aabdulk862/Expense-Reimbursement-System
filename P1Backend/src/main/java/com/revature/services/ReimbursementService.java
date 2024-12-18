@@ -16,13 +16,11 @@ import java.util.stream.Collectors;
 public class ReimbursementService {
 
     private final ReimbursementRepository reimbursementRepository;
-    private final SessionManager sessionManager;
     private final UserService userService;
 
     @Autowired
-    public ReimbursementService(ReimbursementRepository reimbursementRepository, SessionManager sessionManager, UserService userService) {
+    public ReimbursementService(ReimbursementRepository reimbursementRepository, UserService userService) {
         this.reimbursementRepository = reimbursementRepository;
-        this.sessionManager = sessionManager;
         this.userService = userService;
     }
 
@@ -59,17 +57,7 @@ public class ReimbursementService {
         return reimbursementRepository.save(reimbursement);
     }
 
-
-
-    public List<ReimbursementDTO> getAllReimbursements(String sessionToken) {
-        // Validate session and retrieve the current user
-        User currentUser = sessionManager.validateSession(sessionToken);
-
-        // Check if the current user is a manager
-        if (!"MANAGER".equalsIgnoreCase(currentUser.getRole())) {
-            throw new UnauthorizedException("Only managers are allowed to view all reimbursements.");
-        }
-
+    public List<ReimbursementDTO> getAllReimbursements() {
         // Fetch all reimbursements from the repository
         List<Reimbursement> reimbursements = reimbursementRepository.findAll();
 
@@ -84,17 +72,7 @@ public class ReimbursementService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Retrieves all reimbursements for the current user.
-     *
-     * @param sessionToken The session token to identify the current user.
-     * @return A list of the current user's reimbursements.
-     * @throws UnauthorizedException if the session is invalid.
-     */
-    public List<ReimbursementDTO> getReimbursementsForUser(String sessionToken) {
-        // Validate session and retrieve the current user
-        User currentUser = sessionManager.validateSession(sessionToken);
-
+    public List<ReimbursementDTO> getReimbursementsForUser(User currentUser) {
         // Fetch all reimbursements for the current user
         List<Reimbursement> reimbursements = reimbursementRepository.findByUser(currentUser);
 

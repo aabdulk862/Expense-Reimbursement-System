@@ -14,25 +14,27 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
-    private final SessionManager sessionManager;
 
     @Autowired
-    public UserService(UserRepository userRepository, SessionManager sessionManager) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.sessionManager = sessionManager;
     }
 
-    public User createUser(User user){
-        // Check if username is not blank
+    // Create a new user
+    public User createUser(User user) {
+        // Check if the username is not blank
         if (user.getUsername() == null || user.getUsername().isEmpty()) {
             throw new BadRequestException("Username cannot be blank");
         }
-        // Check if password is at least 4 characters long
+
+        // Check if the password is at least 4 characters long
         if (user.getPassword() == null || user.getPassword().length() < 4) {
             throw new BadRequestException("Password must be at least 4 characters long");
         }
-        // Check if username already exists
+
+        // Check if the username already exists
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new ConflictException("Username already exists");
         }
@@ -40,6 +42,8 @@ public class UserService {
         // Save the user to the database
         return userRepository.save(user);
     }
+
+    // Validate user login credentials
     public User validateUser(String username, String password) {
         // Find user by username
         User user = userRepository.findByUsername(username)
@@ -50,28 +54,16 @@ public class UserService {
             throw new UnauthorizedException("Invalid username or password");
         }
 
-        return user; // Return the authenticated user
+        return user;
     }
 
-    public String logout(String sessionToken) {
-        // Invalidate the session using the SessionManager
-        sessionManager.destroySession(sessionToken);
-        return "Successfully logged out.";
-    }
-
-    public List<User> getAllUsers(User currentUser) {
-        if (!"MANAGER".equalsIgnoreCase(currentUser.getRole())) {
-            throw new UnauthorizedException("You do not have permission to view all users.");
-        }
+    // Get all users
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public void deleteUser(int targetUserId, User currentUser) {
-        // Check if the current user has the MANAGER role
-        if (!"MANAGER".equalsIgnoreCase(currentUser.getRole())) {
-            throw new UnauthorizedException("Only managers are allowed to delete users.");
-        }
-
+    // Delete a user by ID
+    public void deleteUser(int targetUserId) {
         // Verify if the target user exists
         User targetUser = userRepository.findById(targetUserId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + targetUserId));
@@ -80,17 +72,12 @@ public class UserService {
         userRepository.delete(targetUser);
     }
 
-    public void updateUserRole(int userId, String newRole, User currentUser) {
-        // Check if the current user is a manager
-        if (!"MANAGER".equalsIgnoreCase(currentUser.getRole())) {
-            throw new UnauthorizedException("Only managers can update user roles.");
-        }
-
+    // Update user role (if needed in the future)
+    public void updateUserRole(int userId, String newRole) {
         // Only allow valid roles for the user
         if (!"EMPLOYEE".equalsIgnoreCase(newRole) && !"MANAGER".equalsIgnoreCase(newRole)) {
             throw new BadRequestException("Invalid role. Allowed roles are EMPLOYEE and MANAGER.");
         }
-
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
@@ -99,6 +86,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+    // Find user by ID
     public Optional<User> findById(int userId) {
         return userRepository.findById(userId);
     }
