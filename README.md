@@ -1,7 +1,7 @@
-# Employee Reimbursement System (ERS)
+# Expense Reimbursement System (ERS)
 
 ## Project Overview  
-The **Employee Reimbursement System (ERS)** is a Java Full Stack application that allows employees to submit reimbursement requests and managers to review and resolve them. The system ensures secure user access and proper role-based functionalities.  
+The **Expense Reimbursement System (ERS)** is a Java Full Stack application that allows employees to submit reimbursement requests and managers to review and resolve them. The system ensures secure user access and proper role-based functionalities.  
 
 ---
 
