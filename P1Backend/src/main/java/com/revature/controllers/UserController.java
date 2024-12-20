@@ -1,5 +1,6 @@
 package com.revature.controllers;
 
+import com.revature.aspects.AdminOnly;
 import com.revature.models.DTOs.LoginRequest;
 import com.revature.models.DTOs.RoleUpdateRequest;
 import com.revature.models.User;
@@ -41,6 +42,7 @@ public class UserController {
 
     // Fetch all users (requires user to be logged in)
     @GetMapping
+    @AdminOnly
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
@@ -48,6 +50,7 @@ public class UserController {
 
     // Delete a user (requires user to be logged in)
     @DeleteMapping("/delete/{userId}")
+    @AdminOnly
     public ResponseEntity<String> deleteUser(@PathVariable int userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok("User deleted successfully");
@@ -55,6 +58,7 @@ public class UserController {
 
     // Update user role (requires user to be logged in)
     @PatchMapping("/update-role")
+    @AdminOnly
     public ResponseEntity<String> updateUserRole(@RequestBody RoleUpdateRequest request) {
         userService.updateUserRole(request.getTargetUserId(), request.getNewRole());
         return ResponseEntity.ok("User role updated successfully");

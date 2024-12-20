@@ -1,2 +1,4 @@
-package com.revature.aspects;public @interface AdminOnly {
+package com.revature.aspects;
+
+public @interface AdminOnly {
 }

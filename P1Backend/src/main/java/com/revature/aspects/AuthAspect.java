@@ -25,4 +25,19 @@ public class AuthAspect {
             throw new UnauthorizedException("User is not logged in");
         }
     }
+
+    @Before("@annotation(AdminOnly)")
+    public void checkAdmin(){
+
+        //If the logged in User's role != "manager" throw an exception
+        if(!"manager".equals(((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                .getRequest().getSession().getAttribute("role"))){
+
+            throw new UnauthorizedException("User is not a manager!");
+
+        }
+
+        //This is accessing the Session like how we did in checkLogin, but as a one liner
+
+    }
 }
