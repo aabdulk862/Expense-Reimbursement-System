@@ -12,7 +12,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin
+@CrossOrigin(value = {"http://localhost:5173"}, allowCredentials = "true")
 public class AuthController {
 
     // Autowire the service

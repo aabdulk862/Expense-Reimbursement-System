@@ -49,7 +49,7 @@ public class AuthController {
         if (session != null) {
             session.invalidate();  // Invalidate the session to log the user out
         }
-
+        System.out.println("User logged out!");
         return ResponseEntity.ok("User logged out successfully");
     }
 

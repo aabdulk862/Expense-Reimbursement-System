@@ -30,11 +30,11 @@ export const Login: React.FC = () => {
         loginCredentials.password
       );
 
-      // Store user data in localStorage
+      // Save user details to localStorage
       localStorage.setItem("userId", user.id);
       localStorage.setItem("role", user.role);
 
-      // Redirect to the appropriate dashboard
+      // Update state to indicate user is logged in
       navigate(user.role === "manager" ? "/manager" : "/employee");
     } catch (err) {
       setError("Invalid username or password.");

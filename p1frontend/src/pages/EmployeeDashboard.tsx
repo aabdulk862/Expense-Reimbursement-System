@@ -42,10 +42,11 @@ export const EmployeeDashboard: React.FC = () => {
       <Typography variant="h3" gutterBottom>
         Employee Dashboard
       </Typography>
-      <Button variant="contained" color="primary" onClick={handleLogout}>
-        Logout
-      </Button>
-      <Box mb={3}>
+
+      <Box style= {{ display: "flex", justifyContent: "space-between" }}>
+        <Button variant="contained" color="primary" onClick={handleLogout}>
+          Logout
+        </Button>
         <Button variant="contained" color="primary">
           Create New Reimbursement
         </Button>
