@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
     <AppBar position="sticky">
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          My Application
+          Employment Reimbursement System
         </Typography>
 
         <Box>
