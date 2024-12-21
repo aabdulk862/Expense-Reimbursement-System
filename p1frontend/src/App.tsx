@@ -1,32 +1,20 @@
 import "./App.css";
 import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { ManagerDashboard } from "./pages/ManagerDashboard";
 import { EmployeeDashboard } from "./pages/EmployeeDashboard";
 import { Login } from "./Components/Auth/Login";
 import Register from "./Components/Auth/Register";
 import Navbar from "./Components/Navbar";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { ReimbursementDetail } from "./Components/Reimbursements/ReimbursementDetail";
+import { ReimbursementForm } from "./Components/Reimbursements/ReimbursementForm";
+import { ReimbursementList } from "./Components/Reimbursements/ReimbursementList";
 
-// Main App Component
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-
-  // Check the localStorage on app load and update state
-  useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    const role = localStorage.getItem("role");
-
-    if (userId && role) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, []); // Empty dependency array ensures this effect runs once when the component mounts
-
   return (
-    <BrowserRouter>
-      <Navbar />
-      <div>
+    <AuthProvider>
+      <BrowserRouter>
+        <Navbar />
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Login />} />
@@ -35,16 +23,38 @@ function App() {
           {/* Protected Routes */}
           <Route
             path="/employee"
-            element={isLoggedIn ? <EmployeeDashboard /> : <Navigate to="/" />}
+            element={<ProtectedRoute component={EmployeeDashboard} />}
           />
           <Route
             path="/manager"
-            element={isLoggedIn ? <ManagerDashboard /> : <Navigate to="/" />}
+            element={<ProtectedRoute component={ManagerDashboard} />}
+          />
+
+          {/* Reimbursement Routes */}
+          <Route
+            path="/create-reimbursements"
+            element={<ProtectedRoute component={ReimbursementForm} />}
+          />
+          <Route
+            path="/reimbursements"
+            element={<ProtectedRoute component={ReimbursementList} />}
+          />
+          <Route
+            path="/reimbursements/:reimId"
+            element={<ProtectedRoute component={ReimbursementDetail} />}
           />
         </Routes>
-      </div>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
 export default App;
+
+// ProtectedRoute component
+const ProtectedRoute: React.FC<{ component: React.FC }> = ({
+  component: Component,
+}) => {
+  const { isLoggedIn } = useAuth();
+  return isLoggedIn ? <Component /> : <Navigate to="/" />;
+};

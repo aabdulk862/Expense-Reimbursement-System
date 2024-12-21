@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TextField, Button, Typography, Box, Alert } from "@mui/material";
 import { login } from "../../services/api";
+import { useAuth } from "../../contexts/AuthContext";
 
 export const Login: React.FC = () => {
   const [loginCredentials, setLoginCredentials] = useState({
@@ -11,6 +12,7 @@ export const Login: React.FC = () => {
 
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { setIsLoggedIn } = useAuth();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -34,7 +36,8 @@ export const Login: React.FC = () => {
       localStorage.setItem("userId", user.id);
       localStorage.setItem("role", user.role);
 
-      // Update state to indicate user is logged in
+      // Update AuthContext and navigate
+      setIsLoggedIn(true);
       navigate(user.role === "manager" ? "/manager" : "/employee");
     } catch (err) {
       setError("Invalid username or password.");

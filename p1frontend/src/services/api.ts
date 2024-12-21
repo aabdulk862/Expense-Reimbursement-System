@@ -34,16 +34,40 @@ export const register = async (data: {
 export const getReimbursements = () => API.get("/reimbursements/my-reimbursements");
 
 // Create a new reimbursement
-export const createReimbursement = (data: {
+export const createReimbursement = async (data: {
   description: string;
-  amount: number;
-}) => API.post("/reimbursements", data);
+  amount: string;
+}) => {
+  return await axios.post(`${API_BASE_URL}/reimbursements/create`, data, {
+    withCredentials: true, // Ensures cookies are sent for session authentication
+  });
+};
+
+export const getReimbursementsForUser = async () => {
+  try {
+    const response = await API.get("/reimbursements/my-reimbursements");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reimbursements:", error);
+    throw error;
+  }
+};
 
 // Update reimbursement description
-export const updateReimbursement = (
-  id: number,
-  data: { description: string }
-) => API.patch(`/reimbursements/${id}`, data);
+export const updateReimbursementDescription = async (
+  reimId: number,
+  description: string
+) => {
+  try {
+    const response = await API.patch(`/reimbursements/update/${reimId}`, {
+      description,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating reimbursement description:", error);
+    throw error;
+  }
+};
 
 // Resolve reimbursement (approve/deny)
 export const resolveReimbursement = (id: number, data: { status: string }) =>

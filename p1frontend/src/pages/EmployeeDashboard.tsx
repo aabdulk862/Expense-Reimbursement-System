@@ -1,36 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Container, Typography, Button, Box } from "@mui/material";
-import { getReimbursements, logout } from "../services/api"; // assuming you have an api service for fetching reimbursements
-import { Reimbursement } from "../types"; // assuming you have a type defined for ReimbursementDTO
+import { Container, Typography, Button, Box, Divider } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { ReimbursementList } from "../Components/Reimbursements/ReimbursementList";
 
 export const EmployeeDashboard: React.FC = () => {
-  const [reimbursements, setReimbursements] = useState<Reimbursement[]>([]);
   const navigate = useNavigate();
-  useEffect(() => {
-    // Fetch reimbursements when the component mounts
-    const fetchReimbursements = async () => {
-      try {
-        const response = await getReimbursements(); // fetching reimbursements from the API
-        setReimbursements(response.data);
-      } catch (error) {
-        console.error("Failed to fetch reimbursements", error);
-      }
-    };
-
-    fetchReimbursements();
-  }, []);
 
   const handleLogout = async () => {
     try {
-      // Call the logout function to invalidate the session
-      await logout();
-
-      // Clear user data from localStorage
+      // Simulate logout logic
       localStorage.removeItem("userId");
       localStorage.removeItem("role");
-
-      // Redirect to the login page
       navigate("/");
     } catch (error) {
       console.error("Error during logout:", error);
@@ -38,46 +17,51 @@ export const EmployeeDashboard: React.FC = () => {
   };
 
   return (
-    <Container>
-      <Typography variant="h3" gutterBottom>
+    <Container
+      maxWidth="lg"
+      sx={{
+        mt: 4,
+        p: 3,
+        backgroundColor: "#f5f5f5",
+        borderRadius: 2,
+        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+      }}
+    >
+      <Typography
+        variant="h3"
+        align="center"
+        gutterBottom
+        sx={{ fontWeight: "bold", mb: 3 }}
+      >
         Employee Dashboard
       </Typography>
-
-      <Box style= {{ display: "flex", justifyContent: "space-between" }}>
-        <Button variant="contained" color="primary" onClick={handleLogout}>
+      <Divider sx={{ mb: 3 }} />
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{ mb: 4 }}
+      >
+        <Button
+          variant="contained"
+          color="error"
+          size="large"
+          onClick={handleLogout}
+          sx={{ px: 3 }}
+        >
           Logout
         </Button>
-        <Button variant="contained" color="primary">
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          onClick={() => navigate("/create-reimbursements")}
+          sx={{ px: 3 }}
+        >
           Create New Reimbursement
         </Button>
       </Box>
-
-      <Typography variant="h5" gutterBottom>
-        Your Reimbursements
-      </Typography>
-
-      <Box>
-        {reimbursements.map((reimbursement) => (
-          <Box
-            key={reimbursement.reimId}
-            p={2}
-            mb={2}
-            border={1}
-            borderRadius={2}
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
-          >
-            <Typography variant="h6">{reimbursement.description}</Typography>
-            <Typography variant="body2">
-              Amount: ${reimbursement.amount}
-            </Typography>
-            <Typography variant="body2">
-              Status: {reimbursement.status}
-            </Typography>
-          </Box>
-        ))}
-      </Box>
+      <ReimbursementList />
     </Container>
   );
 };

@@ -4,7 +4,7 @@ public class ReimbursementDTO {
     private int reimId;
     private String description;
     private double amount;
-    private String status;  // Status is now a String
+    private String status = "PENDING";
     private int userId;
 
     public ReimbursementDTO() {

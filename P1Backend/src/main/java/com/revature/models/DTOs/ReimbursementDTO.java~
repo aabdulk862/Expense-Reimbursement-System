@@ -1,18 +1,16 @@
 package com.revature.models.DTOs;
 
-import com.revature.models.ReimbursementStatus;
-
 public class ReimbursementDTO {
     private int reimId;
     private String description;
     private double amount;
-    private ReimbursementStatus status; // Use enum for better type safety
+    private String status;  // Status is now a String
     private int userId;
 
     public ReimbursementDTO() {
     }
 
-    public ReimbursementDTO(int reimId, String description, double amount, ReimbursementStatus status, int userId) {
+    public ReimbursementDTO(int reimId, String description, double amount, String status, int userId) {
         this.reimId = reimId;
         this.description = description;
         this.amount = amount;
@@ -44,11 +42,11 @@ public class ReimbursementDTO {
         this.amount = amount;
     }
 
-    public ReimbursementStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(ReimbursementStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

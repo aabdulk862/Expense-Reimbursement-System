@@ -15,7 +15,7 @@ public class Reimbursement {
     @Column(nullable = false)
     private double amount;
     @Column(nullable = false)
-    private String status = "PENDING";
+    private String status;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId", nullable = false) //This links our FK to the PK in User (UserId)
     private User user;
