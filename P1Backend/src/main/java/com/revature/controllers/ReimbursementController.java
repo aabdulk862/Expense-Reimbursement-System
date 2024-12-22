@@ -106,7 +106,7 @@ public class ReimbursementController {
         return ResponseEntity.ok(reimbursements);
     }
 
-    @PutMapping("/resolve/{reimId}")
+    @PatchMapping("/resolve/{reimId}")
     @AdminOnly
     public ResponseEntity<ReimbursementDTO> resolveReimbursement(
             @PathVariable int reimId,

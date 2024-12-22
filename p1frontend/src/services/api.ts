@@ -31,7 +31,8 @@ export const register = async (data: {
 };
 
 // Get all reimbursements
-export const getReimbursements = () => API.get("/reimbursements/my-reimbursements");
+export const getReimbursements = () =>
+  API.get("/reimbursements/my-reimbursements");
 
 // Create a new reimbursement
 export const createReimbursement = async (reimbursementData: {
@@ -39,9 +40,13 @@ export const createReimbursement = async (reimbursementData: {
   amount: string;
 }) => {
   try {
-    const response = await API.post("/reimbursements/create", reimbursementData, {
-      withCredentials: true,
-    });
+    const response = await API.post(
+      "/reimbursements/create",
+      reimbursementData,
+      {
+        withCredentials: true,
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Error creating reimbursement:", error);
@@ -75,11 +80,10 @@ export const updateReimbursementDescription = async (
   }
 };
 
-export const getAllReimbursements = async ()=> {
+export const getAllReimbursements = async () => {
   const response = await API.get("/reimbursements");
   return response.data;
 };
-
 
 export const getUsers = async () => {
   return await API.get("/users");
@@ -97,8 +101,27 @@ export const updateUserRole = async (targetUserId: number, newRole: string) => {
 };
 
 // Resolve reimbursement (approve/deny)
-export const resolveReimbursement = (id: number, data: { status: string }) =>
-  API.put(`/reimbursements/resolve/${id}`, data);  // PUT request for resolving the reimbursement
+export const resolveReimbursement = async (reimId: number, status: string) => {
+  try {
+    const payload = { status };
+    const response = await API.patch(
+      `/reimbursements/resolve/${reimId}`,
+      payload
+    );
+    return response.data; // Return the updated reimbursement data
+  } catch (error) {
+    console.error("Failed to resolve reimbursement:", error);
+    throw error; // Re-throw the error for further handling
+  }
+};
 
-
+export const getPendingReimbursements = async () => {
+  try {
+    const response = await API.get("/reimbursements/pending");
+    return response.data; // Assuming the response is a list of ReimbursementDTO
+  } catch (error) {
+    console.error("Error fetching pending reimbursements:", error);
+    throw error;
+  }
+};
 

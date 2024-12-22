@@ -27,7 +27,7 @@ export const UserList: React.FC = () => {
     };
 
     fetchUsers();
-  }, []);
+  }, [users]);
 
   const handleRoleChange = (userId: number, newRole: string) => {
     setEditingRole((prev) => ({ ...prev, [userId]: newRole }));

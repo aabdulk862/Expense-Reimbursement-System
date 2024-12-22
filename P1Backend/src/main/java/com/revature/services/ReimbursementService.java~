@@ -35,10 +35,6 @@ public class ReimbursementService {
             throw new BadRequestException("Amount must be greater than zero.");
         }
 
-        if (reimbursementDTO.getStatus() == null || reimbursementDTO.getStatus().isEmpty()) {
-            throw new BadRequestException("Status cannot be blank.");
-        }
-
         // Ensure the current user is trying to create a reimbursement for themselves
         if (reimbursementDTO.getUserId() != 0 && reimbursementDTO.getUserId() != currentUser.getUserId()) {
             throw new UnauthorizedException("You can only create reimbursements for yourself.");
@@ -161,6 +157,10 @@ public class ReimbursementService {
 
         // Save the updated reimbursement
         return reimbursementRepository.save(reimbursement);
+    }
+
+    public void deleteByUserId(int userId) {
+        reimbursementRepository.deleteByUserId(userId);
     }
 
 }

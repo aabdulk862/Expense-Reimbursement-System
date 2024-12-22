@@ -4,6 +4,7 @@ import com.revature.aspects.AdminOnly;
 import com.revature.models.DTOs.LoginRequest;
 import com.revature.models.DTOs.RoleUpdateRequest;
 import com.revature.models.User;
+import com.revature.services.ReimbursementService;
 import com.revature.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,10 +19,11 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-
+    private final ReimbursementService reimbursementService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService , ReimbursementService reimbursementService) {
+        this.reimbursementService = reimbursementService;
         this.userService = userService;
     }
 
@@ -53,6 +55,8 @@ public class UserController {
     // Delete a user (requires user to be logged in)
     @DeleteMapping("/delete/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable int userId) {
+        // First, delete the related reimbursements
+        reimbursementService.deleteByUserId(userId);
 
         // Then, delete the user
         userService.deleteUser(userId);
