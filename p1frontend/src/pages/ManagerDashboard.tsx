@@ -1,11 +1,22 @@
-import React from "react";
-import { Container, Typography, Button, Box, Divider } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Container,
+  Typography,
+  Button,
+  Box,
+  Divider,
+  Tabs,
+  Tab,
+} from "@mui/material";
 import { useNavigate, Routes, Route } from "react-router-dom";
 import { ReimbursementList } from "../Components/Reimbursements/ReimbursementList";
-import { ReimbursementDetail } from "../Components/Reimbursements/ReimbursementDetail"; // Import ReimbursementDetail
+import { ManagerReimbursementList } from "../Components/Reimbursements/ManagerReimbursementList";
+import { ReimbursementDetail } from "../Components/Reimbursements/ReimbursementDetail";
+import { UserList } from "../Components/Users/UserList";
 
 export const ManagerDashboard: React.FC = () => {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState(0); // 0 for ReimbursementList, 1 for ManagerReimbursementList
 
   const handleLogout = async () => {
     try {
@@ -16,6 +27,10 @@ export const ManagerDashboard: React.FC = () => {
     } catch (error) {
       console.error("Error during logout:", error);
     }
+  };
+
+  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
+    setActiveTab(newValue);
   };
 
   return (
@@ -63,12 +78,23 @@ export const ManagerDashboard: React.FC = () => {
           Create New Reimbursement
         </Button>
       </Box>
-      <Routes>
-        <Route path="/" element={<ReimbursementList />} />
-        {/* ReimbursementList will fetch and display data */}
-        <Route path="/:id" element={<ReimbursementDetail />} />
-        {/* Displays details of a specific reimbursement */}
-      </Routes>
+      <Tabs
+        value={activeTab}
+        onChange={handleTabChange}
+        indicatorColor="primary"
+        textColor="primary"
+        centered
+        sx={{ mb: 4 }}
+      >
+        <Tab label="My Reimbursements" />
+        <Tab label="All Reimbursements" />
+        <Tab label="User Management" />
+      </Tabs>
+      <Box sx={{ mt: 3 }}>
+        {activeTab === 0 && <ReimbursementList />}
+        {activeTab === 1 && <ManagerReimbursementList />}
+        {activeTab === 2 && <UserList />}
+      </Box>
     </Container>
   );
 };

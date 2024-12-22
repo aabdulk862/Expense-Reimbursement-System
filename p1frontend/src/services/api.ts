@@ -34,13 +34,19 @@ export const register = async (data: {
 export const getReimbursements = () => API.get("/reimbursements/my-reimbursements");
 
 // Create a new reimbursement
-export const createReimbursement = async (data: {
+export const createReimbursement = async (reimbursementData: {
   description: string;
   amount: string;
 }) => {
-  return await axios.post(`${API_BASE_URL}/reimbursements/create`, data, {
-    withCredentials: true, // Ensures cookies are sent for session authentication
-  });
+  try {
+    const response = await API.post("/reimbursements/create", reimbursementData, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error creating reimbursement:", error);
+    throw error;
+  }
 };
 
 export const getReimbursementsForUser = async () => {
@@ -69,10 +75,30 @@ export const updateReimbursementDescription = async (
   }
 };
 
+export const getAllReimbursements = async ()=> {
+  const response = await API.get("/reimbursements");
+  return response.data;
+};
+
+
+export const getUsers = async () => {
+  return await API.get("/users");
+};
+
+export const deleteUser = async (userId: number) => {
+  return await API.delete(`/users/delete/${userId}`);
+};
+
+export const updateUserRole = async (targetUserId: number, newRole: string) => {
+  return await API.patch("/users/update-role", {
+    targetUserId,
+    newRole,
+  });
+};
+
 // Resolve reimbursement (approve/deny)
 export const resolveReimbursement = (id: number, data: { status: string }) =>
   API.put(`/reimbursements/resolve/${id}`, data);  // PUT request for resolving the reimbursement
 
 
-// Delete a user
-export const deleteUser = (id: number) => API.delete(`/users/${id}`);
+
