@@ -105,25 +105,10 @@ public class ReimbursementController {
         return ResponseEntity.ok(reimbursements);
     }
 
-    @GetMapping("/my-pending")
-    public ResponseEntity<List<ReimbursementDTO>> getPendingReimbursementsForUser(HttpSession session) {
-        // Retrieve the current user ID from the session
-        Integer currentUserId = (session != null) ? (Integer) session.getAttribute("userId") : null;
-
-        if (currentUserId == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); // Handle unauthorized if userId is not in session
-        }
-
-        // Retrieve the current user from the database (you could use a service method here)
-        User currentUser = userService.findById(currentUserId).orElse(null);
-
-        if (currentUser == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Handle user not found
-        }
-
-        // Call the service to get the pending reimbursements
+    @GetMapping("/reimbursements/my-pending")
+    public ResponseEntity<List<ReimbursementDTO>> getPendingReimbursementsForUser() {
+        User currentUser = authService.getCurrentUser(); // Fetch the logged-in user
         List<ReimbursementDTO> pendingReimbursements = reimbursementService.getPendingReimbursementsForUser(currentUser);
-
         return ResponseEntity.ok(pendingReimbursements);
     }
 

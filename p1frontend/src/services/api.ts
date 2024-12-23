@@ -130,3 +130,12 @@ export const getPendingReimbursements = async () => {
   }
 };
 
+export const getPendingReimbursementsForUser = async () => {
+  try {
+    const response = await API.get("/reimbursements/my-pending");
+    return response;
+  } catch (error) {
+    console.error("Error fetching pending reimbursements", error);
+    throw error;
+  }
+};

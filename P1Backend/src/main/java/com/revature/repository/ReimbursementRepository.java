@@ -15,4 +15,5 @@ import java.util.List;
 public interface ReimbursementRepository extends JpaRepository<Reimbursement, Integer> {
     List<Reimbursement> findByUser(User user);
     List<Reimbursement> findByStatus(String status);
+    List<Reimbursement> findByUserAndStatus(User user, String status);
 }

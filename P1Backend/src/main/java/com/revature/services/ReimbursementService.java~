@@ -106,21 +106,6 @@ public class ReimbursementService {
         return pendingReimbursementDTOs;
     }
 
-    public List<ReimbursementDTO> getPendingReimbursementsForUser(User currentUser) {
-        // Fetch reimbursements for the current user with status 'PENDING'
-        List<Reimbursement> pendingReimbursements = reimbursementRepository.findByUserAndStatus(currentUser, "PENDING");
-
-        // Convert Reimbursement entities to ReimbursementDTOs
-        return pendingReimbursements.stream()
-                .map(reimbursement -> new ReimbursementDTO(
-                        reimbursement.getReimId(),
-                        reimbursement.getDescription(),
-                        reimbursement.getAmount(),
-                        reimbursement.getStatus(),
-                        reimbursement.getUser().getUserId()))
-                .collect(Collectors.toList());
-    }
-
     public ReimbursementDTO resolveReimbursement(int reimId, String status) {
         // Fetch the reimbursement by ID
         Reimbursement reimbursement = reimbursementRepository.findById(reimId)
