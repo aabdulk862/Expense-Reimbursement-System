@@ -89,6 +89,11 @@ export const getUsers = async () => {
   return await API.get("/users");
 };
 
+export const getUserById = async (id: number) => {
+  const response = await API.get(`/users/${id}`);
+  return response.data; // The response will match the structure of OutgoingUserDTO
+};
+
 export const deleteUser = async (userId: number) => {
   return await API.delete(`/users/delete/${userId}`);
 };

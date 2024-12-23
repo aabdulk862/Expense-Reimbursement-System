@@ -81,8 +81,7 @@ public class ReimbursementController {
         int userId = (int) session.getAttribute("userId");
 
         // Fetch the user from the service
-        User currentUser = userService.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
+        User currentUser = userService.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
 
         // Fetch the reimbursements for the current user
         List<ReimbursementDTO> reimbursements = reimbursementService.getReimbursementsForUser(currentUser);

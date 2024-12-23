@@ -13,4 +13,5 @@ export interface Reimbursement {
   amount: number;
   status: string; // 'PENDING', 'APPROVED', 'DENIED'
   userId: number;
+  username?: string;
 }

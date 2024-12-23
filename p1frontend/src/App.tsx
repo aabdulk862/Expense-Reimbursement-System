@@ -6,7 +6,6 @@ import { Login } from "./Components/Auth/Login";
 import Register from "./Components/Auth/Register";
 import Navbar from "./Components/Navbar";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
-import { ReimbursementDetail } from "./Components/Reimbursements/ReimbursementDetail";
 import { ReimbursementForm } from "./Components/Reimbursements/ReimbursementForm";
 import { ReimbursementList } from "./Components/Reimbursements/ReimbursementList";
 
@@ -39,10 +38,7 @@ function App() {
             path="/reimbursements"
             element={<ProtectedRoute component={ReimbursementList} />}
           />
-          <Route
-            path="/reimbursements/:reimId"
-            element={<ProtectedRoute component={ReimbursementDetail} />}
-          />
+      
         </Routes>
       </BrowserRouter>
     </AuthProvider>

@@ -104,6 +104,9 @@ export const ManagerReimbursementList: React.FC = () => {
               {reimbursement.description}
             </Typography>
             <Typography variant="body2" sx={{ mb: 1 }}>
+              <strong>UserId:</strong> {reimbursement.userId}
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>
               <strong>Amount:</strong> ${reimbursement.amount}
             </Typography>
             <Typography variant="body2" sx={{ mb: 2 }}>

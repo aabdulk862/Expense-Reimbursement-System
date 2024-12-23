@@ -8,10 +8,9 @@ import {
   Tabs,
   Tab,
 } from "@mui/material";
-import { useNavigate, Routes, Route } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { ReimbursementList } from "../Components/Reimbursements/ReimbursementList";
 import { ManagerReimbursementList } from "../Components/Reimbursements/ManagerReimbursementList";
-import { ReimbursementDetail } from "../Components/Reimbursements/ReimbursementDetail";
 import { UserList } from "../Components/Users/UserList";
 
 export const ManagerDashboard: React.FC = () => {

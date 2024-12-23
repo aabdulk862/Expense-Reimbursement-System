@@ -7,6 +7,8 @@ public class ReimbursementDTO {
     private String status = "PENDING";
     private int userId;
 
+    private String username;
+
     public ReimbursementDTO() {
     }
 
@@ -16,6 +18,15 @@ public class ReimbursementDTO {
         this.amount = amount;
         this.status = status;
         this.userId = userId;
+    }
+
+    public ReimbursementDTO(int reimId, String description, double amount, String status, int userId, String username) {
+        this.reimId = reimId;
+        this.description = description;
+        this.amount = amount;
+        this.status = status;
+        this.userId = userId;
+        this.username = username;
     }
 
     public int getReimId() {

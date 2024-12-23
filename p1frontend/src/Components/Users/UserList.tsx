@@ -72,6 +72,9 @@ export const UserList: React.FC = () => {
             {user.username}
           </Typography>
           <Typography variant="body2" sx={{ mb: 1 }}>
+            <strong>User ID:</strong> {user.userId}
+          </Typography>
+          <Typography variant="body2" sx={{ mb: 1 }}>
             <strong>Name:</strong> {user.firstName} {user.lastName}
           </Typography>
           <Typography variant="body2" sx={{ mb: 2 }}>
