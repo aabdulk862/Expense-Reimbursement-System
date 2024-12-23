@@ -19,7 +19,7 @@ export const ReimbursementForm: React.FC = () => {
 
     try {
       await createReimbursement(formData); // Call API to create reimbursement
-      navigate("/employee"); // Redirect to employee dashboard after success
+      navigate(-1); // Redirect to  dashboard after success
     } catch (error) {
       console.error("Failed to create reimbursement", error);
       setError("Failed to create reimbursement. Please try again.");
