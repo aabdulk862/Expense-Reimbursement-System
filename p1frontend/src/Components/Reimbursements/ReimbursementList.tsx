@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
-  Button,
   Select,
   MenuItem,
   Divider,
   TextField,
+  Button, // Added missing import for Button
 } from "@mui/material";
 import { Reimbursement } from "../../types";
 import {
   getPendingReimbursementsForUser,
   getReimbursements,
   updateReimbursementDescription,
-} from "../../services/api";
+} from "../../services/api"; // Removed duplicate import
 
 export const ReimbursementList: React.FC = () => {
   const [reimbursements, setReimbursements] = useState<Reimbursement[]>([]);

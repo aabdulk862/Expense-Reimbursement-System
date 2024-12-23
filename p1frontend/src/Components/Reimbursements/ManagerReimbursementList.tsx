@@ -36,7 +36,7 @@ export const ManagerReimbursementList: React.FC = () => {
     };
 
     fetchData();
-  }, [view]); // Re-fetch data whenever view changes
+  }, [view, resolving]); // Re-fetch data whenever view changes
 
   const handleResolveChange = (reimId: number, status: string) => {
     setResolving((prev) => ({ ...prev, [reimId]: status }));
