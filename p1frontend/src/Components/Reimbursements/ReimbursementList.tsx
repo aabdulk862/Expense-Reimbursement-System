@@ -6,13 +6,20 @@ import {
   Select,
   MenuItem,
   Divider,
+  TextField,
 } from "@mui/material";
 import { Reimbursement } from "../../types";
-import { getPendingReimbursementsForUser, getReimbursements, getReimbursementsForUser } from "../../services/api"; // Update API call
+import {
+  getPendingReimbursementsForUser,
+  getReimbursements,
+  updateReimbursementDescription,
+} from "../../services/api";
 
 export const ReimbursementList: React.FC = () => {
   const [reimbursements, setReimbursements] = useState<Reimbursement[]>([]);
   const [view, setView] = useState<"all" | "pending">("pending");
+  const [editingReimId, setEditingReimId] = useState<number | null>(null);
+  const [newDescription, setNewDescription] = useState<string>("");
 
   useEffect(() => {
     const fetchReimbursements = async () => {
@@ -20,11 +27,9 @@ export const ReimbursementList: React.FC = () => {
         let response;
 
         if (view === "pending") {
-          // Fetch pending reimbursements from the backend
-          response = await getPendingReimbursementsForUser(); // Call the updated API endpoint
+          response = await getPendingReimbursementsForUser();
         } else {
-          // Fetch all reimbursements (optional logic for this)
-          response = await getReimbursements(); // You can implement this function as well
+          response = await getReimbursements();
         }
 
         setReimbursements(response.data);
@@ -34,7 +39,24 @@ export const ReimbursementList: React.FC = () => {
     };
 
     fetchReimbursements();
-  }, [view]); // Re-run the fetch when view changes
+  }, [view]);
+
+  const handleEditDescription = (
+    reimId: number,
+    currentDescription: string
+  ) => {
+    setEditingReimId(reimId);
+    setNewDescription(currentDescription);
+  };
+
+  const handleSaveDescription = async (reimId: number) => {
+    try {
+      await updateReimbursementDescription(reimId, newDescription);
+      setEditingReimId(null); // Stop editing mode
+    } catch (error) {
+      console.error("Error saving reimbursement description", error);
+    }
+  };
 
   return (
     <Box sx={{ maxWidth: "600px", margin: "0 auto", p: 3 }}>
@@ -72,15 +94,56 @@ export const ReimbursementList: React.FC = () => {
               backgroundColor: "#f9f9f9",
             }}
           >
-            <Typography variant="h6" sx={{ mb: 1 }}>
-              {reimbursement.description}
-            </Typography>
-            <Typography variant="body2" sx={{ mb: 1 }}>
-              <strong>Amount:</strong> ${reimbursement.amount}
-            </Typography>
-            <Typography variant="body2" sx={{ mb: 2 }}>
-              <strong>Status:</strong> {reimbursement.status}
-            </Typography>
+            {editingReimId === reimbursement.reimId ? (
+              <Box>
+                <TextField
+                  value={newDescription}
+                  onChange={(e) => setNewDescription(e.target.value)}
+                  fullWidth
+                  variant="outlined"
+                  sx={{ mb: 2 }}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleSaveDescription(reimbursement.reimId)}
+                >
+                  Save
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => setEditingReimId(null)} // Cancel editing
+                  sx={{ ml: 2 }}
+                >
+                  Cancel
+                </Button>
+              </Box>
+            ) : (
+              <>
+                <Typography variant="h6" sx={{ mb: 1 }}>
+                  {reimbursement.description}
+                </Typography>
+                <Typography variant="body2" sx={{ mb: 1 }}>
+                  <strong>Amount:</strong> ${reimbursement.amount}
+                </Typography>
+                <Typography variant="body2" sx={{ mb: 2 }}>
+                  <strong>Status:</strong> {reimbursement.status}
+                </Typography>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() =>
+                    handleEditDescription(
+                      reimbursement.reimId,
+                      reimbursement.description
+                    )
+                  }
+                >
+                  Edit Description
+                </Button>
+              </>
+            )}
           </Box>
         ))
       )}
