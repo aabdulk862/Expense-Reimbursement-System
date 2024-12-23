@@ -1,6 +1,7 @@
 import { Container, Typography, Button, Box, Divider } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { ReimbursementList } from "../Components/Reimbursements/ReimbursementList";
+import { logout } from "../services/api";
 
 export const EmployeeDashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -8,6 +9,7 @@ export const EmployeeDashboard: React.FC = () => {
   const handleLogout = async () => {
     try {
       // Simulate logout logic
+      logout()
       localStorage.removeItem("userId");
       localStorage.removeItem("role");
       navigate("/");

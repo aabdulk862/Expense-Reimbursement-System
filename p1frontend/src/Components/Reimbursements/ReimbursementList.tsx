@@ -39,7 +39,7 @@ export const ReimbursementList: React.FC = () => {
     };
 
     fetchReimbursements();
-  }, [view]);
+  }, [view, editingReimId]);
 
   const handleEditDescription = (
     reimId: number,
@@ -55,6 +55,7 @@ export const ReimbursementList: React.FC = () => {
       setEditingReimId(null); // Stop editing mode
     } catch (error) {
       console.error("Error saving reimbursement description", error);
+      alert("Error saving reimbursement description");
     }
   };
 

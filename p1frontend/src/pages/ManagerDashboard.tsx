@@ -12,6 +12,7 @@ import { useNavigate} from "react-router-dom";
 import { ReimbursementList } from "../Components/Reimbursements/ReimbursementList";
 import { ManagerReimbursementList } from "../Components/Reimbursements/ManagerReimbursementList";
 import { UserList } from "../Components/Users/UserList";
+import { logout } from "../services/api";
 
 export const ManagerDashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ export const ManagerDashboard: React.FC = () => {
   const handleLogout = async () => {
     try {
       // Perform logout actions
+      logout()
       localStorage.removeItem("userId");
       localStorage.removeItem("role");
       navigate("/");
